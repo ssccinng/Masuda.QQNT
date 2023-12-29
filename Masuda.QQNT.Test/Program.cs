@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Text.Json;
 using Masuda.QQNT;
+using Masuda.QQNT.Models.Message;
 using TestBot;
 
 // var aa = JsonSerializer.Deserialize<ProtoEvent>(
@@ -13,10 +14,14 @@ using TestBot;
 // });
 // return;
 
-NTBot bot = new NTBot{ BotConfig = new Masuda.QQNT.Models.BotConfig {
-    IPAddress = "127.0.0.1:8080"
-}};
-
+NTBot bot = new NTBot
+{
+    BotConfig = new Masuda.QQNT.Models.BotConfig
+    {
+        IPAddress = "127.0.0.1:8080"
+    }
+};
+var kuiPath = @"D:\kui";
 string[][] kuishi = new[]
     {
         BotLib.失魂雨,
@@ -66,10 +71,11 @@ bot.OnGroupMessage += async (bot, messages) => {
                             }
                         }
 
+                            }
+                        }
                     }
-                }
+                    break;
             }
-
         }
 
     }
