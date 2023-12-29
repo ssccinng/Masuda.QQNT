@@ -78,6 +78,5 @@ bot.OnGroupMessage += async (bot, messages) => {
             }
         }
 
-    }
 };
 Console.ReadLine();
