@@ -11,5 +11,6 @@ namespace Masuda.QQNT.Models
     {
         [JsonPropertyName("type")]
         public string Type { get; protected set; } = string.Empty;
+
     }
 }

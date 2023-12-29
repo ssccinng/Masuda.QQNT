@@ -5,9 +5,17 @@ using Masuda.QQNT.Models.Message;
 
 namespace Masuda.QQNT;
 
-public class JsonHelper
+public static class JsonHelper
 {
-
+    public static T GetData<T>(this JsonElement element)
+    {
+        return JsonSerializer.Deserialize<T>(element, new JsonSerializerOptions
+        {
+            Converters = {
+                new MessageJsonConverter()
+            }
+        }) ;
+    }
 }
 
 public class MessageJsonConverter : JsonConverter<MessageBase>

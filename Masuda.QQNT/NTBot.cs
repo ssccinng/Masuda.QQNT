@@ -47,12 +47,11 @@ public class NTBot
         switch (protoEvent.EventType)
         {
             case EventType.Message:
-                OnGroupMessage?.Invoke(this, JsonSerializer.Deserialize<MasudaMessage>(protoEvent.Data,
-                    new JsonSerializerOptions
-                    {
-                        Converters = { new MessageJsonConverter() }
-                    }
-                ));
+                var messageData = protoEvent.Data.GetData<MasudaMessage>();
+                if (messageData.Peer.ChatType == "group")
+                {
+                    OnGroupMessage?.Invoke(this, messageData);
+                }
                 break;
             case EventType.FriendMessage:
                 // OnMessage?.Invoke(this, protoEvent.Message);
@@ -97,29 +96,41 @@ public class NTBot
 
 
     #region MessageMethod
-    public async Task SendMessagesAsync(string target, params MessageBase[] message)
+    public async Task SendFriendMessageAsync(string target, params MessageBase[] message)
     {
-
+        await SendMessageCoreAsync(target, CommandType.SendFriendMessage, message);
     }
 
     public async Task SendGroupMessageAsync(string group, string message) {
         await SendGroupMessageAsync(group, new PlainMessage {Content = message});
     }
-    public async Task SendGroupMessageAsync(string group, params MessageBase[] message)
+    public async Task SendMessageAsync(Peer peer, string message)
+    {
+        if (peer.ChatType == "group")
+            await SendGroupMessageAsync(peer.Uid, new PlainMessage { Content = message });
+        else
+            await SendFriendMessageAsync(peer.Uid, new PlainMessage { Content = message });
+    }
+    private async Task SendMessageCoreAsync(string target, CommandType commandType, params MessageBase[] message)
     {
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
-            CommandType = CommandType.SendGroupMessage,
+            CommandType = commandType,
             Data = new SendMessageComand
             {
-                Target = group,
+                Target = target,
                 MessageChain = message
             }
         }, new JsonSerializerOptions
         {
-            Converters = { new MessageJsonConverter() }
+            Converters = { new MessageJsonConverter() },
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         });
         await Send(_client, data);
+    }
+    public async Task SendGroupMessageAsync(string group, params MessageBase[] message)
+    {
+        await SendMessageCoreAsync(group, CommandType.SendGroupMessage, message);
     }
     #endregion
 }

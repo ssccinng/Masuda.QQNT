@@ -8,8 +8,15 @@ public class MasudaMessage
 {
     [JsonPropertyName("sender")]
     public Sender Sender { get; set; }
+
+    [JsonPropertyName("peer")]
+    public Peer Peer { get; set; }
+
+    [JsonPropertyName("msgId")]
+    public string Id { get; protected set; }
+
     [JsonPropertyName("content")]
-    public MasudaMessageUnit[] Content { get; set; }
+    public MessageBase[] Content { get; set; }
 }
 
 

@@ -31,8 +31,8 @@ string[][] kuishi = new[]
 
 bot.LaunchAsync().Wait();
 bot.OnGroupMessage += async (bot, messages) => {
-    var mdata = messages.Content[0];
-    foreach (var message in mdata.Elements)
+    var mdata = messages.Content;
+    foreach (var message in mdata)
     {
         // System.Console.WriteLine(message.GetType());
         if (message is PlainMessage plainMessage)
@@ -49,20 +49,19 @@ bot.OnGroupMessage += async (bot, messages) => {
                         if (content == shi[i])
                         {
                             if (i < shi.Length - 1)
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i + 1]);
+                                await bot.SendMessageAsync(messages.Peer, shi[i + 1]);
                             return;
                         }
                         else
                         {
                             if (shi[i][content.Length] == ',')
                             {
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i][(content.Length + 1)..].Trim());
+                                await bot.SendMessageAsync(messages.Peer, shi[i][(content.Length + 1)..].Trim());
                                 return;
                             }
                             else
                             {
-                                // await bot.DeleteMessageAsync(msg);
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i]);
+                                await bot.SendMessageAsync(messages.Peer, shi[i]);
                                 return;
                             }
                         }
