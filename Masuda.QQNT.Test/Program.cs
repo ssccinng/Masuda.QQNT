@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Text.Json;
 using Masuda.QQNT;
+using Masuda.QQNT.Models.Message;
 using TestBot;
 
 // var aa = JsonSerializer.Deserialize<ProtoEvent>(
@@ -13,10 +14,14 @@ using TestBot;
 // });
 // return;
 
-NTBot bot = new NTBot{ BotConfig = new Masuda.QQNT.Models.BotConfig {
-    IPAddress = "127.0.0.1:8080"
-}};
-
+NTBot bot = new NTBot
+{
+    BotConfig = new Masuda.QQNT.Models.BotConfig
+    {
+        IPAddress = "127.0.0.1:8080"
+    }
+};
+var kuiPath = @"D:\kui";
 string[][] kuishi = new[]
     {
         BotLib.失魂雨,
@@ -30,7 +35,8 @@ string[][] kuishi = new[]
     };
 
 bot.LaunchAsync().Wait();
-bot.OnGroupMessage += async (bot, messages) => {
+bot.OnGroupMessage += async (bot, messages) =>
+{
     var mdata = messages.Content[0];
     foreach (var message in mdata.Elements)
     {
@@ -39,38 +45,57 @@ bot.OnGroupMessage += async (bot, messages) => {
         {
             System.Console.WriteLine(plainMessage.Content);
             var content = plainMessage.Content;
-            if (plainMessage.Content.Length < 2) return;
-            foreach (var shi in kuishi)
+
+            switch (content.ToLower())
             {
-                for (int i = 0; i < shi.Length; ++i)
-                {
-                    if (shi[i].StartsWith(content))
+                case "masuda":
+                    await bot.SendGroupMessageAsync(mdata.Peer.Uid, "Masuda is God!");
+
+                    break;
+                case "随机蓝葵":
+                    var lanKuiPath = Directory.GetFiles($"{kuiPath}/蓝葵游戏1/");
+
+                    await bot.SendGroupMessageAsync(mdata.Peer.Uid, new ImageMessage { File = $"{lanKuiPath[Random.Shared.Next(lanKuiPath.Length)]}" });
+                    break;
+                case "随机红葵":
+                    var hongKuiPath = Directory.GetFiles($"{kuiPath}/红葵游戏1/");
+
+                    await bot.SendGroupMessageAsync(mdata.Peer.Uid, new ImageMessage { File = $"{hongKuiPath[Random.Shared.Next(hongKuiPath.Length)]}" });
+                    break;
+                default:
+                    if (plainMessage.Content.Length < 2) return;
+                    foreach (var shi in kuishi)
                     {
-                        if (content == shi[i])
+                        for (int i = 0; i < shi.Length; ++i)
                         {
-                            if (i < shi.Length - 1)
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i + 1]);
-                            return;
-                        }
-                        else
-                        {
-                            if (shi[i][content.Length] == ',')
+                            if (shi[i].StartsWith(content))
                             {
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i][(content.Length + 1)..].Trim());
-                                return;
-                            }
-                            else
-                            {
-                                // await bot.DeleteMessageAsync(msg);
-                                await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i]);
-                                return;
-                            }
-                        }
+                                if (content == shi[i])
+                                {
+                                    if (i < shi.Length - 1)
+                                        await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i + 1]);
+                                    return;
+                                }
+                                else
+                                {
+                                    if (shi[i][content.Length] == ',')
+                                    {
+                                        await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i][(content.Length + 1)..].Trim());
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        // await bot.DeleteMessageAsync(msg);
+                                        await bot.SendGroupMessageAsync(mdata.Peer.Uid, shi[i]);
+                                        return;
+                                    }
+                                }
 
+                            }
+                        }
                     }
-                }
+                    break;
             }
-
         }
 
     }
