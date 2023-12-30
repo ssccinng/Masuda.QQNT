@@ -18,8 +18,9 @@ public class NTBot
 
 
     #region 事件
-    public event Action<NTBot, MessageBase[]> OnMessage;
+    public event Action<NTBot, MasudaMessage> OnMessage;
     public event Action<NTBot, MasudaMessage> OnGroupMessage;
+    public event Action<NTBot, MasudaMessage> OnFriendMessage;
     #endregion
 
     MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions() { });
@@ -55,6 +56,12 @@ public class NTBot
                 {
                     OnGroupMessage?.Invoke(this, messageData);
                 }
+                else if (messageData.Peer.ChatType == "friend")
+                {
+                    OnFriendMessage?.Invoke(this, messageData);
+                }
+                OnMessage?.Invoke(this, messageData);
+
                 break;
             case EventType.FriendMessage:
                 // OnMessage?.Invoke(this, protoEvent.Message);
@@ -69,6 +76,19 @@ public class NTBot
                 var userInfo = protoEvent.Data.GetData<QQUserInfo>();
                 memoryCache.Set(userInfo.Uid, userInfo, TimeSpan.FromHours(1));
                 break; 
+            case EventType.GetGroupList:
+                var groupList = protoEvent.Data.GetData<List<QQGroupInfo>>();
+                memoryCache.Set("groupList", groupList, TimeSpan.FromHours(1));
+                break;
+            case EventType.GetFriendsList:
+                var friendList = protoEvent.Data.GetData<List<QQFriendInfo>>();
+                memoryCache.Set("friendList", friendList, TimeSpan.FromHours(1));
+                break;
+            case EventType.GetAccountInfo:
+                var accountInfo = protoEvent.Data.GetData<QQAccountInfo>();
+                memoryCache.Set("accountInfo", accountInfo, TimeSpan.FromHours(1));
+                break;
+            
 
 
             default:
@@ -125,7 +145,7 @@ public class NTBot
     {
         if (peer.ChatType == "group")
             await SendGroupMessageAsync(peer.Uid, new PlainMessage { Content = message });
-        else
+        else if (peer.ChatType == "friend")
             await SendFriendMessageAsync(peer.Uid, new PlainMessage { Content = message });
     }
     private async Task SendMessageCoreAsync(string target, CommandType commandType, params MessageBase[] message)
@@ -162,20 +182,33 @@ public class NTBot
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetUserInfo,
-            Data = new 
+            Data = new
             {
                 uid
             }
         });
         await Send(_client, data);
+        var token = GetTimeToken();
         while (!memoryCache.TryGetValue<QQUserInfo>(uid, out userInfo))
         {
-            await Task.Delay(100);
+            await Task.Delay(100, token);
         }
         return userInfo;
     }
-    public async Task GetGroupListAsync(bool forced = false)
+
+    private static CancellationToken GetTimeToken()
     {
+        CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        cancellationTokenSource.CancelAfter(30000);
+        return cancellationTokenSource.Token;
+    }
+
+    public async Task<List<QQGroupInfo>> GetGroupListAsync(bool forced = false)
+    {
+        if (memoryCache.TryGetValue<List<QQGroupInfo>>("groupList", out var groupList))
+        {
+            return groupList;
+        }
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetGroupList,
@@ -184,33 +217,66 @@ public class NTBot
             }
         });
         await Send(_client, data);
+        var token = GetTimeToken();
+        while (!memoryCache.TryGetValue<List<QQGroupInfo>>("groupList", out groupList))
+        {
+            await Task.Delay(100, token);
+        }
+        return groupList;
     }
-    public async Task GetFriendListAsync(bool forced = false)
+    public async Task<List<QQFriendInfo>> GetFriendListAsync(bool forced = false)
     {
+        if (memoryCache.TryGetValue<List<QQFriendInfo>>("friendList", out var friendList))
+        {
+            return friendList;
+        }
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
-            CommandType = CommandType.GetFriendList,
+            CommandType = CommandType.GetFriendsList,
             Data = new {
                 forced
             }
         });
         await Send(_client, data);
+        var token = GetTimeToken();
+        while (!memoryCache.TryGetValue<List<QQFriendInfo>>("friendList", out friendList))
+        {
+            await Task.Delay(100, token);
+        }
+        return friendList;
     }
-    public async Task GetAccountInfoAsync()
+    public async Task<QQAccountInfo> GetAccountInfoAsync()
     {
+        if (memoryCache.TryGetValue<QQAccountInfo>("accountInfo", out var accountInfo))
+        {
+            return accountInfo;
+        }
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetAccountInfo,
             Data = new { }
         });
         await Send(_client, data);
+        var token = GetTimeToken();
+        while (!memoryCache.TryGetValue<QQAccountInfo>("accountInfo", out accountInfo))
+        {
+            await Task.Delay(100, token);
+        }
+        return accountInfo;
     }
-    public async Task GetPeerAsync(string uid)
+
+    public async Task<string> GetQQNumberAsync(string uid)
+    {
+        var userInfo = await GetUserInfoAsync(uid);
+        return userInfo.Uin;
+    }
+
+    public async Task GetPeerAsync()
     {
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetPeer,
-            Data = new { Uid = uid }
+            Data = new { }
         });
         await Send(_client, data);
     }

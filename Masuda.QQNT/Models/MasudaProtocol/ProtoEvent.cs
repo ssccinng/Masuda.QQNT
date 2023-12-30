@@ -27,7 +27,7 @@ public enum EventType
     TempMessage,
     GetUserInfo,
     GetGroupList,
-    GetFriendList,
+    GetFriendsList,
     GetAccountInfo,
     GetPeer,
 }

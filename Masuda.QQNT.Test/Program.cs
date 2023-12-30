@@ -35,7 +35,7 @@ string[][] kuishi = new[]
     };
 
 bot.LaunchAsync().Wait();
-bot.OnGroupMessage += async (bot, messages) => {
+bot.OnMessage += async (bot, messages) => {
     var mdata = messages.Content;
     foreach (var message in mdata)
     {

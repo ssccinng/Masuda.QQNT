@@ -35,7 +35,7 @@ public enum CommandType
 
     GetUserInfo,
     GetGroupList,
-    GetFriendList,
+    GetFriendsList,
     GetAccountInfo,
     GetPeer,
 }

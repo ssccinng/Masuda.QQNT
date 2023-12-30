@@ -3,7 +3,7 @@
 namespace Masuda.QQNT;
 
 
-public class QQUserInfo
+public class QQFriendInfo
 {
     [JsonPropertyName("uid")]
     public string Uid { get; set; }
@@ -61,3 +61,4 @@ public class QQUserInfo
     }
 
 }
+
