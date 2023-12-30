@@ -133,4 +133,60 @@ public class NTBot
         await SendMessageCoreAsync(group, CommandType.SendGroupMessage, message);
     }
     #endregion
+
+
+    #region GetInfoMethod
+    public async Task GetUserInfoAsync(string uid)
+    {
+        var data = JsonSerializer.Serialize(new ProtoCommand
+        {
+            CommandType = CommandType.GetUserInfo,
+            Data = new 
+            {
+                Uid = uid
+            }
+        });
+        await Send(_client, data);
+    }
+    public async Task GetGroupListAsync(bool forced = false)
+    {
+        var data = JsonSerializer.Serialize(new ProtoCommand
+        {
+            CommandType = CommandType.GetGroupList,
+            Data = new { 
+                forced
+            }
+        });
+        await Send(_client, data);
+    }
+    public async Task GetFriendListAsync(bool forced = false)
+    {
+        var data = JsonSerializer.Serialize(new ProtoCommand
+        {
+            CommandType = CommandType.GetFriendList,
+            Data = new {
+                forced
+            }
+        });
+        await Send(_client, data);
+    }
+    public async Task GetAccountInfoAsync()
+    {
+        var data = JsonSerializer.Serialize(new ProtoCommand
+        {
+            CommandType = CommandType.GetAccountInfo,
+            Data = new { }
+        });
+        await Send(_client, data);
+    }
+    public async Task GetPeerAsync(string uid)
+    {
+        var data = JsonSerializer.Serialize(new ProtoCommand
+        {
+            CommandType = CommandType.GetPeer,
+            Data = new { Uid = uid }
+        });
+        await Send(_client, data);
+    }
+    #endregion
 }
