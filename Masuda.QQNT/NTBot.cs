@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Caching.Memory;
 namespace Masuda.QQNT;
 
 public class NTBot
@@ -20,6 +21,8 @@ public class NTBot
     public event Action<NTBot, MessageBase[]> OnMessage;
     public event Action<NTBot, MasudaMessage> OnGroupMessage;
     #endregion
+
+    MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions() { });
 
 
     public async Task LaunchAsync()
@@ -62,6 +65,12 @@ public class NTBot
             case EventType.TempMessage:
                 // OnMessage?.Invoke(this, protoEvent.Message);
                 break;
+            case EventType.GetUserInfo:
+                var userInfo = protoEvent.Data.GetData<QQUserInfo>();
+                memoryCache.Set(userInfo.Uid, userInfo, TimeSpan.FromHours(1));
+                break; 
+
+
             default:
                 break;
         }
@@ -76,13 +85,21 @@ public class NTBot
     async Task Receive(ClientWebSocket client)
     {
         byte[] buffer = new byte[1024];
+        StringBuilder sb = new StringBuilder();
         while (true)
         {
             var result = await client.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             if (result.MessageType == WebSocketMessageType.Text)
             {
                 string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                await MessageHandlerAsync(message);
+
+                sb.Append(message);
+                if (message.EndsWith("[end]")) {
+                    sb.Remove(sb.Length - 5, 5);
+                    message = sb.ToString();
+                    sb.Clear();
+                    await MessageHandlerAsync(message);
+                }
                 // Console.WriteLine("Received: " + message);
             }
             else if (result.MessageType == WebSocketMessageType.Close)
@@ -136,8 +153,12 @@ public class NTBot
 
 
     #region GetInfoMethod
-    public async Task GetUserInfoAsync(string uid)
+    public async Task<QQUserInfo> GetUserInfoAsync(string uid)
     {
+        if (memoryCache.TryGetValue<QQUserInfo>(uid, out var userInfo))
+        {
+            return userInfo;
+        }
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetUserInfo,
@@ -147,6 +168,11 @@ public class NTBot
             }
         });
         await Send(_client, data);
+        while (!memoryCache.TryGetValue<QQUserInfo>(uid, out userInfo))
+        {
+            await Task.Delay(100);
+        }
+        return userInfo;
     }
     public async Task GetGroupListAsync(bool forced = false)
     {
