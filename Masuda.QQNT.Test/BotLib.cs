@@ -313,53 +313,7 @@ namespace TestBot
 
         #endregion
 
-        static string URL_DETAIL = "https://manga.bilibili.com/twirp/comic.v2.Comic/ComicDetail?device=pc&platform=web";
-        static string URL_IMAGE_INDEX = "https://manga.bilibili.com/twirp/comic.v1.Comic/GetImageIndex?device=pc&platform=web";
-        static string URL_MANGA_HOST = "https://manga.hdslb.com";
-        static string URL_IMAGE_TOKEN = "https://manga.bilibili.com/twirp/comic.v1.Comic/ImageToken?device=pc&platform=web";
 
-        public static async Task<JsonElement> GetChapters(int ComicId)
-        {
-            HttpClient MangaHttpClient = new HttpClient();
-            MangaHttpClient.DefaultRequestHeaders.Add("Cookie", "SESSDATA=045e584c%2C1649390286%2Cecc98%2Aa1");
-            var res = await MangaHttpClient.PostAsJsonAsync(
-                URL_DETAIL, new { comic_id = ComicId });
-            var data = await res.Content.ReadFromJsonAsync<JsonElement>();
-            data = data.GetProperty("data");
-            Console.WriteLine(data.GetProperty("title"));
-            Console.WriteLine(data.GetProperty("evaluate"));
-            return data;
-            //return data.GetProperty("ep_list");
-        }
-        public static async Task<List<string>> GetImages(int EPId)
-        {
-            HttpClient MangaHttpClient = new HttpClient();
-            MangaHttpClient.DefaultRequestHeaders.Add("Cookie", "SESSDATA=045e584c%2C1649390286%2Cecc98%2Aa1");
-            var res1 =
-                await MangaHttpClient.PostAsJsonAsync("https://manga.bilibili.com/twirp/comic.v1.Comic/GetImageIndex?device=pc&platform=web",
-                new { ep_id = EPId });
-            var mangaData = await res1.Content.ReadFromJsonAsync<JsonElement>();
-            mangaData = mangaData.GetProperty("data").GetProperty("images");
-            List<string> urls = new();
-            for (int j = 0; j < mangaData.GetArrayLength(); j++)
-            {
-                urls.Add(mangaData[j].GetProperty("path").GetString());
-            }
-            return await GetFullUrls(urls);
-        }
-        static async Task<List<string>> GetFullUrls(List<string> urls)
-        {
-            HttpClient MangaHttpClient = new HttpClient();
-            MangaHttpClient.DefaultRequestHeaders.Add("Cookie", "SESSDATA=045e584c%2C1649390286%2Cecc98%2Aa1");
-            var res = await MangaHttpClient.PostAsJsonAsync(URL_IMAGE_TOKEN, new { urls = JsonSerializer.Serialize(urls) });
-            var data = (await res.Content.ReadFromJsonAsync<JsonElement>()).GetProperty("data");
-            List<string> picres = new();
-            for (int i = 0; i < data.GetArrayLength(); i++)
-            {
-                picres.Add($"{data[i].GetProperty("url")}?token={data[i].GetProperty("token")}");
-            }
-            return picres;
-        }
     }
 
 
