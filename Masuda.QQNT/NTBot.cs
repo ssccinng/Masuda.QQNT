@@ -143,7 +143,7 @@ public class NTBot
             CommandType = CommandType.GetUserInfo,
             Data = new 
             {
-                Uid = uid
+                uid
             }
         });
         await Send(_client, data);
