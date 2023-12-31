@@ -42,7 +42,7 @@ public class AtMessage: MessageBase
 public enum AtType
 {
     AtOne = 2,
-    AtAll = 2
+    AtAll = 1
 
 }
 
