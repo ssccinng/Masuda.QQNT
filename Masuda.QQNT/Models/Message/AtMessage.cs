@@ -7,6 +7,7 @@ public class AtMessage: MessageBase
 {
     public AtMessage()
     {
+        Rawdata.TextElement.atType = 1;
     }
     public AtMessage(string uid)
     {
@@ -24,13 +25,13 @@ public class AtMessage: MessageBase
     }
     [JsonPropertyName("raw")]
 
-    public Raw Rawdata = new();
+    public Raw Rawdata { get; set; } = new();
 
 
     public class Raw
     {
         [JsonPropertyName("elementType")]
-        public int ElementType = 1;
+        public int ElementType { get; set; } = 1;
 
         [JsonPropertyName("textElement")]
 
@@ -52,7 +53,7 @@ public class TextElement
     public int atType { get; set; } = 2;
     public string atUid { get; set; }= "0";
     public string atTinyId { get; set; }= "0";
-    public string atNtUid { get; set; }= "0";
+    public string atNtUid { get; set; }= "";
     public int subElementType { get; set; }
     public string atChannelId { get; set; } = "0";
     public string atRoleId { get; set; }= "0";

@@ -10,14 +10,27 @@ namespace Masuda.QQNT.Models.Message
     public class ReplyMessage : MessageBase
     {
 
+        public ReplyMessage(MasudaMessage masudaMessage)
+        {
+            Rawdata.ReplyElement.replayMsgSeq = masudaMessage.MsgSeq;
+            Rawdata.ReplyElement.sourceMsgIdInRecords = masudaMessage.Id;
+            Rawdata.ReplyElement.senderUidStr = masudaMessage.Sender.Uid;
+            Rawdata.ReplyElement.sourceMsgTextElems = new[] { new Sourcemsgtextelem {
+                textElemContent = masudaMessage.Content.OfType<PlainMessage>().FirstOrDefault(s => s.Type == "text")?.Content ?? "[图片]"
+            } };
+        }
+        [JsonPropertyName("raw")]
+        public Raw Rawdata { get; set; } = new();
+
+
         public class Raw
         {
             [JsonPropertyName("elementType")]
-            public int ElementType = 1;
+            public int ElementType { get; set; } = 7;
 
             [JsonPropertyName("replyElement")]
 
-            public ReplyElement TextElement { get; set; } = new ReplyElement();
+            public ReplyElement ReplyElement { get; set; } = new ReplyElement();
         }
     }
 

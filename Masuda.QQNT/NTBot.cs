@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Memory;
+using Masuda.QQNT.Models.Message;
 namespace Masuda.QQNT;
 
 public class NTBot
@@ -141,6 +142,14 @@ public class NTBot
 
     public async Task SendGroupMessageAsync(string group, string message) {
         await SendGroupMessageAsync(group, new PlainMessage {Content = message});
+    }
+    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, Peer peer, string message)
+    {
+        await ReplyMessageAsync(masudaMessage, peer, new PlainMessage { Content = message});
+    }
+    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, Peer peer, params MessageBase[]  messages)
+    {
+        await SendMessageAsync(peer, messages.Prepend(new ReplyMessage(masudaMessage)).ToArray());
     }
     public async Task SendMessageAsync(Peer peer, params MessageBase[]  messages)
     {
