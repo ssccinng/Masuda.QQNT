@@ -1,4 +1,5 @@
 ﻿using Masuda.QQNT.Models;
+using System.Text.Json.Serialization;
 
 namespace Masuda.QQNT;
 
@@ -15,9 +16,16 @@ public class AtMessage: PlainMessage
     {
         TextElement.atType = 1;
     }
+    [JsonPropertyName("raw")]
 
-    
+    public object Raw => new
+    {
+        elementType = 1,
+        textElement = TextElement
+    };
 
+    [JsonIgnore]
+    [JsonPropertyName("textElement")]
     public TextElement TextElement { get; set; } = new TextElement();
 }
 
