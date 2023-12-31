@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Masuda.QQNT;
 
-public class AtMessage: PlainMessage
+public class AtMessage: MessageBase
 {
     public AtMessage()
     {
