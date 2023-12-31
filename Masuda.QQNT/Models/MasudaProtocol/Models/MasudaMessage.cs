@@ -13,9 +13,9 @@ public class MasudaMessage
     public Peer Peer { get; set; }
 
     [JsonPropertyName("msgId")]
-    public string Id { get; protected set; }
+    public string Id { get; set; }
     [JsonPropertyName("msgSeq")]
-    public string MsgSeq { get; protected set; }
+    public string MsgSeq { get; set; }
 
     [JsonPropertyName("content")]
     public MessageBase[] Content { get; set; }
