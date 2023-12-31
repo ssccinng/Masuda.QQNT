@@ -31,6 +31,7 @@ public class NTBot
         Uri uri = new Uri($"ws://{BotConfig.IPAddress}");
         _client = new ClientWebSocket();
         await _client.ConnectAsync(uri, CancellationToken.None);
+        await Send(_client, $"key: {BotConfig.Key}");
         _thread = new Thread(async () => await Receive(_client));
         _thread.Start();
     }
@@ -140,6 +141,13 @@ public class NTBot
 
     public async Task SendGroupMessageAsync(string group, string message) {
         await SendGroupMessageAsync(group, new PlainMessage {Content = message});
+    }
+    public async Task SendMessageAsync(Peer peer, params MessageBase[]  messages)
+    {
+        if (peer.ChatType == "group")
+            await SendGroupMessageAsync(peer.Uid, messages);
+        else if (peer.ChatType == "friend")
+            await SendFriendMessageAsync(peer.Uid, messages);
     }
     public async Task SendMessageAsync(Peer peer, string message)
     {

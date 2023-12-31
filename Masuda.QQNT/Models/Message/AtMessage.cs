@@ -4,6 +4,9 @@ namespace Masuda.QQNT;
 
 public class AtMessage: PlainMessage
 {
+    public AtMessage()
+    {
+    }
     public AtMessage(string qq)
     {
         
@@ -13,6 +16,7 @@ public class AtMessage: PlainMessage
         TextElement.atType = 1;
     }
 
+    
 
     public TextElement TextElement { get; set; } = new TextElement();
 }
