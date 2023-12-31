@@ -25,7 +25,9 @@ namespace Masuda.QQNT.Models.Message
         public FileMessage(string filePath)
         {
             Rawdata.FileElement.filePath = filePath;
-            Rawdata.FileElement.fileMd5 = CalculateMD5(filePath);
+            Rawdata.FileElement.fileName = Path.GetFileName(filePath);
+            Rawdata.FileElement.fileSize = new FileInfo(filePath).Length.ToString();
+            Rawdata.FileElement.fileMd5 = CalculateMD5(filePath).ToLower();
         }
 
         [JsonPropertyName("raw")]
