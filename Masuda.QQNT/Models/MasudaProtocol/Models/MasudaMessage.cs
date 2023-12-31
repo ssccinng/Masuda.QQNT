@@ -16,6 +16,8 @@ public class MasudaMessage
     public string Id { get; set; }
     [JsonPropertyName("msgSeq")]
     public string MsgSeq { get; set; }
+    [JsonPropertyName("msgTime")]
+    public string MsgTime { get; set; }
 
     [JsonPropertyName("content")]
     public MessageBase[] Content { get; set; }

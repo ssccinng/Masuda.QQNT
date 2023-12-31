@@ -13,6 +13,7 @@ namespace Masuda.QQNT.Models.Message
         public ReplyMessage(MasudaMessage masudaMessage)
         {
             Rawdata.ReplyElement.replayMsgSeq = masudaMessage.MsgSeq;
+            Rawdata.ReplyElement.replyMsgTime = masudaMessage.MsgTime;
             Rawdata.ReplyElement.sourceMsgIdInRecords = masudaMessage.Id;
             Rawdata.ReplyElement.senderUidStr = masudaMessage.Sender.Uid;
             Rawdata.ReplyElement.sourceMsgTextElems = new[] { new Sourcemsgtextelem {
