@@ -35,7 +35,8 @@ string[][] kuishi = new[]
     };
 
 bot.LaunchAsync().Wait();
-bot.OnMessage += async (bot, messages) => {
+bot.OnMessage += async (bot, messages) =>
+{
     var mdata = messages.Content;
     foreach (var message in mdata)
     {
@@ -71,12 +72,12 @@ bot.OnMessage += async (bot, messages) => {
                             }
                         }
 
-                            }
-                        }
                     }
-                    break;
+                }
             }
+            break;
         }
+    }
 
 };
 Console.ReadLine();
