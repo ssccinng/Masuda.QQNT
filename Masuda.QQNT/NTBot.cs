@@ -31,7 +31,7 @@ public class NTBot
         Uri uri = new Uri($"ws://{BotConfig.IPAddress}");
         _client = new ClientWebSocket();
         await _client.ConnectAsync(uri, CancellationToken.None);
-        await Send(_client, $"key: {BotConfig.Key}");
+        await Send(_client, $"key:{BotConfig.Key}");
         _thread = new Thread(async () => await Receive(_client));
         _thread.Start();
     }
