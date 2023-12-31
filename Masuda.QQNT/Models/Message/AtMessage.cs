@@ -8,25 +8,42 @@ public class AtMessage: PlainMessage
     public AtMessage()
     {
     }
-    public AtMessage(string qq)
+    public AtMessage(string uid)
     {
-        
+        // 暂不支持
+        // 要获取一下名字mo
+        Rawdata.TextElement.atType = 2;
+        Rawdata.TextElement.atNtUid = uid;
+        Rawdata.TextElement.content = $"@{uid}";
     }
     public AtMessage(Sender sender)
     {
-        TextElement.atType = 1;
+        Rawdata.TextElement.atType = 2;
+        Rawdata.TextElement.atNtUid = sender.Uid;
+        Rawdata.TextElement.content = $"@{sender.NickName}";
     }
     [JsonPropertyName("raw")]
 
-    public object Raw => new
-    {
-        elementType = 1,
-        textElement = TextElement
-    };
+    public Raw Rawdata = new();
 
-    [JsonIgnore]
-    [JsonPropertyName("textElement")]
-    public TextElement TextElement { get; set; } = new TextElement();
+
+    public class Raw
+    {
+        [JsonPropertyName("elementType")]
+        public int ElementType = 1;
+
+        [JsonPropertyName("textElement")]
+
+        public TextElement TextElement { get; set; } = new TextElement();
+
+    }
+}
+
+public enum AtType
+{
+    AtOne = 2,
+    AtAll = 2
+
 }
 
 public class TextElement

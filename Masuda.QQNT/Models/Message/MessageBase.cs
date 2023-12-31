@@ -10,7 +10,7 @@ namespace Masuda.QQNT.Models
     public class MessageBase
     {
         [JsonPropertyName("type")]
-        public string Type { get; protected set; } = string.Empty;
+        public string Type { get; protected set; } = "raw";
 
     }
 }

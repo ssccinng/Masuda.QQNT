@@ -14,6 +14,8 @@ public class MasudaMessage
 
     [JsonPropertyName("msgId")]
     public string Id { get; protected set; }
+    [JsonPropertyName("msgSeq")]
+    public string MsgSeq { get; protected set; }
 
     [JsonPropertyName("content")]
     public MessageBase[] Content { get; set; }
