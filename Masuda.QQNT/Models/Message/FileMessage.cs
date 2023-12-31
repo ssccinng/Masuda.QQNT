@@ -28,6 +28,9 @@ namespace Masuda.QQNT.Models.Message
             Rawdata.FileElement.fileName = Path.GetFileName(filePath);
             Rawdata.FileElement.fileSize = new FileInfo(filePath).Length.ToString();
             Rawdata.FileElement.fileMd5 = CalculateMD5(filePath).ToLower();
+
+            //if (filePath.EndsWith())
+            //Rawdata.FileElement.fileUuid = $"/{Guid.NewGuid()}";
         }
 
         [JsonPropertyName("raw")]
@@ -49,15 +52,15 @@ namespace Masuda.QQNT.Models.Message
             public string fileName { get; set; } = string.Empty;
             public string filePath { get; set; } = string.Empty;
             public string fileSize { get; set; } = string.Empty;
-            public int picHeight { get; set; } = 0;
-            public int picWidth { get; set; } = 0;
-            public Picthumbpath picThumbPath { get; set; } = new();
+            public int? picHeight { get; set; } = null;
+            public int? picWidth { get; set; } = null;
+            public Picthumbpath picThumbPath { get; set; }
             public string expireTime { get; set; } = "0";
             public string file10MMd5 { get; set; } = string.Empty;
             public string fileSha { get; set; } = string.Empty;
             public string fileSha3 { get; set; } = string.Empty;
             public int videoDuration { get; set; }
-            public int transferStatus { get; set; } = 1;
+            public int transferStatus { get; set; } = 2;
             public int progress { get; set; }
             public int invalidState { get; set; }
             public string fileUuid { get; set; } = string.Empty;
