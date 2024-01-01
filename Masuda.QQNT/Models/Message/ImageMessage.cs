@@ -10,6 +10,17 @@ namespace Masuda.QQNT.Models.Message
 {
     public class ImageMessage: MessageBase
     {
+        public ImageMessage(string auto)
+        {
+            if (Uri.IsWellFormedUriString(auto, UriKind.Absolute))
+            {
+                File = FileHelper.DownloadImage(auto).Result;
+            }
+            else
+            {
+                File = auto;
+            }
+        }
         public ImageMessage(string? file = null, string? url = null)
         {
             Type = "image";
