@@ -77,7 +77,7 @@ public class NTBot
             case EventType.GetUserInfo:
                 var userInfo = protoEvent.Data.GetData<QQUserInfo>();
                 memoryCache.Set(userInfo.Uid, userInfo, TimeSpan.FromHours(1));
-                break; 
+                break;
             case EventType.GetGroupList:
                 var groupList = protoEvent.Data.GetData<List<QQGroupInfo>>();
                 memoryCache.Set("groupList", groupList, TimeSpan.FromHours(1));
@@ -90,7 +90,7 @@ public class NTBot
                 var accountInfo = protoEvent.Data.GetData<QQAccountInfo>();
                 memoryCache.Set("accountInfo", accountInfo, TimeSpan.FromHours(1));
                 break;
-            
+
 
 
             default:
@@ -116,7 +116,8 @@ public class NTBot
                 string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
 
                 sb.Append(message);
-                if (message.EndsWith("[end]")) {
+                if (message.EndsWith("[end]"))
+                {
                     sb.Remove(sb.Length - 5, 5);
                     message = sb.ToString();
                     sb.Clear();
@@ -140,18 +141,27 @@ public class NTBot
         await SendMessageCoreAsync(target, CommandType.SendFriendMessage, message);
     }
 
-    public async Task SendGroupMessageAsync(string group, string message) {
-        await SendGroupMessageAsync(group, new PlainMessage {Content = message});
-    }
-    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, Peer peer, string message)
+    public async Task SendGroupMessageAsync(string group, string message)
     {
-        await ReplyMessageAsync(masudaMessage, peer, new PlainMessage { Content = message});
+        await SendGroupMessageAsync(group, new PlainMessage { Content = message });
     }
-    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, Peer peer, params MessageBase[]  messages)
+    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, string message)
     {
-        await SendMessageAsync(peer, messages.Prepend(new ReplyMessage(masudaMessage)).ToArray());
+        await ReplyMessageAsync(masudaMessage, new PlainMessage { Content = message });
     }
-    public async Task SendMessageAsync(Peer peer, params MessageBase[]  messages)
+    public async Task ReplyMessageAsync(MasudaMessage masudaMessage, params MessageBase[] messages)
+    {
+        await SendMessageAsync(masudaMessage.Peer, messages.Prepend(new ReplyMessage(masudaMessage)).ToArray());
+    }
+    public async Task SendMessageAsync(MasudaMessage masudaMessage, string message)
+    {
+        await SendMessageAsync(masudaMessage.Peer, message);
+    }
+    public async Task SendMessageAsync(MasudaMessage masudaMessage, params MessageBase[] messages)
+    {
+        await SendMessageAsync(masudaMessage.Peer, messages);
+    }
+    public async Task SendMessageAsync(Peer peer, params MessageBase[] messages)
     {
         if (peer.ChatType == "group")
             await SendGroupMessageAsync(peer.Uid, messages);
@@ -229,7 +239,8 @@ public class NTBot
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetGroupList,
-            Data = new { 
+            Data = new
+            {
                 forced
             }
         });
@@ -250,7 +261,8 @@ public class NTBot
         var data = JsonSerializer.Serialize(new ProtoCommand
         {
             CommandType = CommandType.GetFriendsList,
-            Data = new {
+            Data = new
+            {
                 forced
             }
         });

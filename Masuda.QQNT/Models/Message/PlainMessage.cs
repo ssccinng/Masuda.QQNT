@@ -5,12 +5,17 @@ namespace Masuda.QQNT;
 
 public class PlainMessage: MessageBase
 {
-    public PlainMessage()
+    public PlainMessage() 
     {
         Type = "text";
     }
+    public PlainMessage(string content)
+    {
+        Type = "text";
+        Content = content;
+    }
 
     [JsonPropertyName("content")]
-    public required string Content { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 
 }

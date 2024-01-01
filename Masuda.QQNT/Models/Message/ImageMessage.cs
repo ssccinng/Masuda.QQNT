@@ -9,11 +9,16 @@ namespace Masuda.QQNT.Models.Message
 {
     public class ImageMessage: MessageBase
     {
+        public ImageMessage(string file)
+        {
+            Type = "image";
+            File = file;
+        }
         public ImageMessage()
         {
             Type = "image";
         }
         [JsonPropertyName("file")]
-        public required string File { get; set; } = string.Empty;
+        public string File { get; set; } = string.Empty;
     }
 }

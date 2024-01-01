@@ -55,6 +55,14 @@ bot.OnMessage += async (bot, messages) =>
                     {
                         if (content == shi[i])
                         {
+
+                            // await bot.SendMessageAsync(messages, new PlainMessage("你好呀"), new ImageMessage("https://www.baidu.com/img/flexible/logo/pc/result.png"));
+                            // // 2. 直接发送文本
+                            // await bot.SendMessageAsync(messages, "你好呀");
+                            // // 3. 回复
+                            // await bot.ReplyMessageAsync(messages, "你好呀");
+                            // // 4. 回复并@发送者
+                            // await bot.ReplyMessageAsync(messages, new AtMessage(messages.Sender), new PlainMessage("你好呀"));
                             if (i < shi.Length - 1)
                                 await bot.SendMessageAsync(messages.Peer, shi[i + 1]);
                             return;
