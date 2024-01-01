@@ -1,9 +1,9 @@
-﻿using Masuda.QQNT.Models;
+﻿using Masuda.QQNT.Models.MasudaProtocol.Models;
 using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.Message;
 
-public class AtMessage: MessageBase
+public class AtMessage : MessageBase
 {
     public AtMessage()
     {
@@ -51,13 +51,13 @@ public class TextElement
 {
     public string content { get; set; } = string.Empty;
     public int atType { get; set; } = 2;
-    public string atUid { get; set; }= "0";
-    public string atTinyId { get; set; }= "0";
-    public string atNtUid { get; set; }= "";
+    public string atUid { get; set; } = "0";
+    public string atTinyId { get; set; } = "0";
+    public string atNtUid { get; set; } = "";
     public int subElementType { get; set; }
     public string atChannelId { get; set; } = "0";
-    public string atRoleId { get; set; }= "0";
+    public string atRoleId { get; set; } = "0";
     public int atRoleColor { get; set; }
-    public string atRoleName { get; set; }= "0";
+    public string atRoleName { get; set; } = "0";
     public int needNotify { get; set; }
 }

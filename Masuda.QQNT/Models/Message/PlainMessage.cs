@@ -1,11 +1,10 @@
 ﻿using System.Text.Json.Serialization;
-using Masuda.QQNT.Models;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.Message;
 
-public class PlainMessage: MessageBase
+public class PlainMessage : MessageBase
 {
-    public PlainMessage() 
+    public PlainMessage()
     {
         Type = "text";
     }

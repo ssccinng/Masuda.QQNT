@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
-using Masuda.QQNT.Models;
+using Masuda.QQNT.Models.Message;
 
-namespace Masuda.QQNT;
-public class SendMessageComand {
+namespace Masuda.QQNT.Models.MasudaProtocol.Command;
+public class SendMessageComand
+{
     [JsonPropertyName("target")]
     public string Target { get; set; }
     // 内部需要是messagebase系列的

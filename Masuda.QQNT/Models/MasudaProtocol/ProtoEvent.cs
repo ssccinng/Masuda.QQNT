@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.MasudaProtocol;
 
 public class ProtoEvent
 {
@@ -15,11 +15,12 @@ public class ProtoEvent
     public JsonElement Data { get; set; }
 }
 
-public class ProtoData {
+public class ProtoData
+{
 
 }
 
-public enum EventType 
+public enum EventType
 {
     Message,
     FriendMessage,

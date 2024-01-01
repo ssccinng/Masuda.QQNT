@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Caching.Memory;
 using Masuda.QQNT.Models.Message;
+using Masuda.QQNT.Utils;
+using Masuda.QQNT.Models.MasudaProtocol;
+using Masuda.QQNT.Models.MasudaProtocol.Models;
+using Masuda.QQNT.Models.MasudaProtocol.Command;
 namespace Masuda.QQNT;
 
 public class NTBot

@@ -1,20 +1,20 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using Masuda.QQNT.Models;
+using Masuda.QQNT.Models.MasudaProtocol;
 using Masuda.QQNT.Models.Message;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Utils;
 
 public static class JsonHelper
 {
     public static T GetData<T>(this JsonElement element)
     {
-        return JsonSerializer.Deserialize<T>(element, new JsonSerializerOptions
+        return element.Deserialize<T>(new JsonSerializerOptions
         {
             Converters = {
                 new MessageJsonConverter()
             }
-        }) ;
+        });
     }
 }
 

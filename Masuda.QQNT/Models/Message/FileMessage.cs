@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Masuda.QQNT.Models.Message
 {
-   
+
     public class FileMessage : MessageBase
     {
         public static string CalculateMD5(string filePath)

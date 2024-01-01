@@ -1,12 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.MasudaProtocol;
 
 public class ProtoCommand
 {
     [JsonIgnore]
     public CommandType CommandType { get; set; }
-    
+
     [JsonPropertyName("t")]
     public string Type => CommandType.ToString();
 
@@ -14,7 +14,7 @@ public class ProtoCommand
     public object Data { get; set; }
 }
 
-public enum CommandType 
+public enum CommandType
 {
     /// <summary>
     /// 发送好友消息

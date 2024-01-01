@@ -1,8 +1,9 @@
 using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.MasudaProtocol.Models;
 
-public class Peer {
+public class Peer
+{
     [JsonPropertyName("uid")]
     public string Uid { get; set; } = string.Empty;
     [JsonPropertyName("guildid")]

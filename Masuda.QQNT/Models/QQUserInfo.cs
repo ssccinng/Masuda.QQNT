@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models;
 
 
 public class QQUserInfo

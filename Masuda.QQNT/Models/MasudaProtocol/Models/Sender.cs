@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Masuda.QQNT;
+namespace Masuda.QQNT.Models.MasudaProtocol.Models;
 
-public class Sender 
+public class Sender
 {
     [JsonPropertyName("uid")]
     public string Uid { get; set; } = string.Empty;
