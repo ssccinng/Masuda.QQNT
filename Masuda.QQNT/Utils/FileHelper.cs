@@ -13,7 +13,7 @@ namespace Masuda.QQNT.Utils
         public static async Task<string> DownloadImage(string url)
         {
             var filename = $"{Path.GetTempFileName()}.png";
-            var bs = await HttpClient.GetByteArrayAsync(filename);
+            var bs = await HttpClient.GetByteArrayAsync(url);
             await File.WriteAllBytesAsync(filename, bs);
             return filename;
         }
