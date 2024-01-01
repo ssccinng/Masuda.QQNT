@@ -18,7 +18,8 @@ NTBot bot = new NTBot
 {
     BotConfig = new Masuda.QQNT.Models.BotConfig
     {
-        IPAddress = "127.0.0.1:8080"
+        IPAddress = "127.0.0.1:8080",
+        Key = "165423",
     }
 };
 var kuiPath = @"D:\kui";

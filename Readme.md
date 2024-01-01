@@ -8,6 +8,10 @@
 
 支持回复 后续补充文档
 
+## 使用说明
+1. 按照
+
+
 ```
 dotnet add package Masuda.QQNT
 ```
