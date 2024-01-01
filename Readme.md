@@ -64,7 +64,7 @@ bot.OnMessage += async (bot, messages) =>
                     case "你好":
                         // 回复文本消息
                         // 1. 组合消息
-                        await bot.SendMessageAsync(messages, new PlainMessage("你好呀"), new ImageMessage("https://www.baidu.com/img/flexible/logo/pc/result.png"));
+                        await bot.SendMessageAsync(messages, new PlainMessage("你好呀"), new ImageMessage(url: "https://www.baidu.com/img/flexible/logo/pc/result.png"));
                         // 2. 直接发送文本
                         await bot.SendMessageAsync(messages, "你好呀");
                         // 3. 回复

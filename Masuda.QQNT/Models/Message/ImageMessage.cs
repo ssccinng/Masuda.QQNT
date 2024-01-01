@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Masuda.QQNT.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,17 @@ namespace Masuda.QQNT.Models.Message
 {
     public class ImageMessage: MessageBase
     {
-        public ImageMessage(string file)
+        public ImageMessage(string? file = null, string? url = null)
         {
             Type = "image";
-            File = file;
+            if (file != null)
+            {
+                File = file;
+            }
+            else if (url != null)
+            {
+                File = FileHelper.DownloadImage(url).Result;
+            }
         }
         public ImageMessage()
         {
