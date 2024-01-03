@@ -42,6 +42,14 @@ bot.OnMessage += async (bot, messages) =>
     foreach (var message in mdata)
     {
         // System.Console.WriteLine(message.GetType());
+
+        ImageMessage imageMessage = new();
+        while (!File.Exists(imageMessage.File))
+        {
+            await Task.Delay(100);
+        }
+
+
         if (message is PlainMessage plainMessage)
         {
             System.Console.WriteLine(plainMessage.Content);

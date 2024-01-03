@@ -110,7 +110,7 @@ public class NTBot
 
     async Task Receive(ClientWebSocket client)
     {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[1024 * 1024];
         StringBuilder sb = new StringBuilder();
         while (true)
         {
