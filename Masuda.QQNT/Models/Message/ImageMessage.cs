@@ -46,6 +46,16 @@ namespace Masuda.QQNT.Models.Message
         {
             cancellationToken ??= CancellationToken.None;
             string newFile = File.Replace("\\Ori\\", "\\OriTemp\\");
+            string newFile1 = File.Replace("\\Ori\\", "\\Thumb\\");
+            string ext = System.IO.Path.GetExtension(File);
+            newFile1 = newFile1.Replace(ext, $"_0{ext}");
+            string newFile2 = File.Replace("\\Ori\\", "\\ThumbTemp\\");
+            newFile2 = newFile2.Replace(ext, $"_0{ext}");
+
+            Console.WriteLine(newFile);
+            Console.WriteLine(newFile1);
+            Console.WriteLine(newFile2);
+
             while (!cancellationToken.Value.IsCancellationRequested)
             {
                 if (System.IO.File.Exists(File))
@@ -55,6 +65,18 @@ namespace Masuda.QQNT.Models.Message
                 if (System.IO.File.Exists(newFile))
                 {
                     File = newFile;
+                    return true;
+
+                }
+                if (System.IO.File.Exists(newFile1))
+                {
+                    File = newFile1;
+                    return true;
+
+                }
+                if (System.IO.File.Exists(newFile2))
+                {
+                    File = newFile2;
                     return true;
 
                 }

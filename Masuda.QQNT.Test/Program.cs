@@ -44,6 +44,7 @@ bot.OnMessage += async (bot, messages) =>
         // System.Console.WriteLine(message.GetType());
 
         ImageMessage imageMessage = new();
+        await imageMessage.WaitImageExistAsync();
         while (!File.Exists(imageMessage.File))
         {
             await Task.Delay(100);
