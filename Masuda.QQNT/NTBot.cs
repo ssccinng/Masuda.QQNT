@@ -192,7 +192,8 @@ public class NTBot
         }, new JsonSerializerOptions
         {
             Converters = { new MessageJsonConverter() },
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+             Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         });
         await Send(_client, data);
     }

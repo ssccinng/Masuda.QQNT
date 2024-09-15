@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决�
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeteaseCloudMusic.NET", "..\NeteaseCloudMusic.NET\NeteaseCloudMusic.NET\NeteaseCloudMusic.NET.csproj", "{2AC1FC72-96FF-4586-95E1-338891114318}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{784E5E2D-ECB5-40DD-9928-83AB71CB2123}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{784E5E2D-ECB5-40DD-9928-83AB71CB2123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{784E5E2D-ECB5-40DD-9928-83AB71CB2123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC1FC72-96FF-4586-95E1-338891114318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC1FC72-96FF-4586-95E1-338891114318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC1FC72-96FF-4586-95E1-338891114318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC1FC72-96FF-4586-95E1-338891114318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

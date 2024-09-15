@@ -13,7 +13,8 @@ using TestBot;
 //      Converters = { new MessageJsonConverter() }
 // });
 // return;
-
+NeteaseCloudMusic.NET.NeteasyCloudClient neteasyCloudClient = new();
+await neteasyCloudClient.RegisterAnonimous();
 NTBot bot = new NTBot
 {
     BotConfig = new Masuda.QQNT.Models.BotConfig
@@ -43,19 +44,45 @@ bot.OnMessage += async (bot, messages) =>
     {
         // System.Console.WriteLine(message.GetType());
 
-        ImageMessage imageMessage = new();
-        await imageMessage.WaitImageExistAsync();
-        while (!File.Exists(imageMessage.File))
-        {
-            await Task.Delay(100);
-        }
+        //ImageMessage imageMessage = new();
+        //await imageMessage.WaitImageExistAsync();
+        //while (!File.Exists(imageMessage.File))
+        //{
+        //    await Task.Delay(100);
+        //}
 
 
         if (message is PlainMessage plainMessage)
         {
+
             System.Console.WriteLine(plainMessage.Content);
             var content = plainMessage.Content;
+
+            if (content == "test")
+            {
+                var song = await neteasyCloudClient.SearchMusicAsync("Where We Belong");
+                //var song = await neteasyCloudClient.SearchMusicAsync("a step away");
+                await bot.SendGroupMessageAsync(messages.Peer.Uid, new MusicMessage(song[0].id.ToString() , song[0].name + " (" + song[0].tns[0] + ")", "http://p1.music.126.net/uz6z15QyBmrnsC-pSmJMWA==/109951167736550226.jpg?imageView=1&thumbnail=1200z2543&type=webp&quality=80"));
+                //await bot.SendGroupMessageAsync(messages.Peer.Uid, new FileMessage("C:\\Users\\admin\\Documents\\LiteLoaderQQNT\\plugins\\masuda_20059 \\src\\main.js"));
+            }
+
+            if (content.StartsWith("点歌"))
+            {
+
+                var song = await neteasyCloudClient.SearchMusicAsync(content[2..].Trim());
+                if (song.Length > 0)
+                {
+                    //await bot.SendGroupMessageAsync(messages.Peer.Uid, );
+
+                    await bot.SendGroupMessageAsync(messages.Peer.Uid, new PlainMessage($"{song[0].name}\n{song[0].alia.FirstOrDefault()}\n{song[0].ar.FirstOrDefault()?.name}\n{song[0].tns?.FirstOrDefault()}\nhttp://music.163.com/song/media/outer/url?id={song[0].id}"),new ImageMessage(url: song[0].al.picUrl));
+                }
+
+            }
+
             if (plainMessage.Content.Length < 2) return;
+
+
+
             foreach (var shi in kuishi)
             {
                 for (int i = 0; i < shi.Length; ++i)
@@ -71,7 +98,7 @@ bot.OnMessage += async (bot, messages) =>
                             // // 3. 回复
                             // await bot.ReplyMessageAsync(messages, "你好呀");
                             // // 4. 回复并@发送者
-                            // await bot.ReplyMessageAsync(messages, new AtMessage(messages.Sender), new PlainMessage("你好呀"));
+                            //await bot.ReplyMessageAsync(messages, new AtMessage(messages.Sender), new PlainMessage("你好呀"));
                             if (i < shi.Length - 1)
                                 await bot.SendMessageAsync(messages.Peer, shi[i + 1]);
                             return;

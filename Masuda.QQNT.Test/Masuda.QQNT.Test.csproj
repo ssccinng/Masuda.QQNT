@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\NeteaseCloudMusic.NET\NeteaseCloudMusic.NET\NeteaseCloudMusic.NET.csproj" />
     <ProjectReference Include="..\Masuda.QQNT\Masuda.QQNT.csproj" />
   </ItemGroup>
 
