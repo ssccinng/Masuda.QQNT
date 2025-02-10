@@ -24,6 +24,27 @@ namespace Masuda.QQNT.Models.Message
         }
         public FileMessage(string filePath)
         {
+            // 如果是url 则需要下载
+
+            if (filePath.StartsWith("http"))
+            {
+                HttpClient httpClient = new HttpClient();
+
+                if (Uri.TryCreate(filePath, uriKind: UriKind.Absolute, out var uri))
+                {
+                    var response = httpClient.GetByteArrayAsync(filePath).Result;
+
+                    var tempPath = Path.GetTempFileName()  + Path.GetExtension(uri.LocalPath);
+                    File.WriteAllBytes(tempPath, response);
+                    filePath = tempPath;
+                }
+                else
+                {
+                    Console.WriteLine("不是链接");
+                }
+         
+
+            }
             Rawdata.FileElement.filePath = filePath;
             Rawdata.FileElement.fileName = Path.GetFileName(filePath);
             Rawdata.FileElement.fileSize = new FileInfo(filePath).Length.ToString();

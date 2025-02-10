@@ -78,7 +78,18 @@ bot.OnMessage += async (bot, messages) =>
                 }
 
             }
+            if (content.StartsWith("电台"))
+            {
 
+                var song = await neteasyCloudClient.SearchMusicAsync(content[2..].Trim(), type: 1009);
+                if (song?.Length  > 0)
+                {
+                    //await bot.SendGroupMessageAsync(messages.Peer.Uid, );
+
+                    await bot.SendGroupMessageAsync(messages.Peer.Uid, new PlainMessage($"{song[0].name}\n{song[0].alia.FirstOrDefault()}\n{song[0].ar.FirstOrDefault()?.name}\n{song[0].tns?.FirstOrDefault()}\nhttp://music.163.com/song/media/outer/url?id={song[0].id}"), new ImageMessage(url: song[0].al.picUrl));
+                }
+
+            }
             if (plainMessage.Content.Length < 2) return;
 
 
