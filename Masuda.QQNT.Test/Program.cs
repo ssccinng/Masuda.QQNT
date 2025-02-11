@@ -37,6 +37,30 @@ string[][] kuishi = new[]
     };
 
 bot.LaunchAsync().Wait();
+bot.OnFriendMessage += async (bot, messages) =>
+{
+    var mdata = messages.Content;
+    foreach (var message in mdata)
+    {
+        if (message is PlainMessage plainMessage)
+        {
+
+            System.Console.WriteLine(plainMessage.Content);
+            var content = plainMessage.Content;
+
+            if (content == "test1")
+            {
+                //await bot.SendFriendMessageAsync(messages.Peer.Uid, new RefMessage());
+                await bot.SendFriendMessageAsync(messages.Peer.Uid, new PlainMessage("1234"));
+                //await bot.SendFriendMessageAsync("3084029286", new RefMessage());
+
+            }
+        }
+    }
+    
+   
+
+};
 bot.OnMessage += async (bot, messages) =>
 {
     var mdata = messages.Content;
@@ -57,6 +81,14 @@ bot.OnMessage += async (bot, messages) =>
 
             System.Console.WriteLine(plainMessage.Content);
             var content = plainMessage.Content;
+
+            if (content == "test1")
+            {
+                //await bot.SendFriendMessageAsync(messages.Peer.Uid, new RefMessage());
+                await bot.SendFriendMessageAsync("u_XYCAUcydUutkVCNQNHJ1ow", new RefMessage());
+                //await bot.SendFriendMessageAsync("3084029286", new RefMessage());
+
+            }
 
             if (content == "test")
             {
